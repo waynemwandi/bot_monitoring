@@ -26,7 +26,6 @@ source venv/Scripts/activate
 
 ```python
 pip freeze > requirements.txt
-111
 ```
 
 - Run FastAPI App

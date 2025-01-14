@@ -1,11 +1,16 @@
-from fastapi import APIRouter
+import os
+
+import pymysql
+from dotenv import load_dotenv
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
-# Create a router for endpoints in this file
+# Load environment variables
+load_dotenv()
+
 router = APIRouter()
 
 
-# Define the BotLog model
 class BotLog(BaseModel):
     user: str
     start_time: str
@@ -19,8 +24,40 @@ class BotLog(BaseModel):
     error_message: str = None
 
 
-# Define the endpoint
 @router.post("/log-event")
 def log_event(bot_log: BotLog):
-    print(bot_log)
-    return {"message": "Log received successfully", "data": bot_log}
+    try:
+        # Connect to MySQL database using environment variables
+        connection = pymysql.connect(
+            host=os.getenv("DB_HOST"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            database=os.getenv("DB_NAME"),
+        )
+        with connection.cursor() as cursor:
+            sql = """
+            INSERT INTO bot_logs 
+            (user, start_time, end_time, volumes, heartbeat, department, ip_address, bot_type, status, error_message)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """
+            cursor.execute(
+                sql,
+                (
+                    bot_log.user,
+                    bot_log.start_time,
+                    bot_log.end_time,
+                    bot_log.volumes,
+                    bot_log.heartbeat,
+                    bot_log.department,
+                    bot_log.ip_address,
+                    bot_log.bot_type,
+                    bot_log.status,
+                    bot_log.error_message,
+                ),
+            )
+            connection.commit()
+        return {"message": "Log saved to database successfully", "data": bot_log}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        connection.close()
