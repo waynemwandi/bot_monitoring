@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+
 from log_event import router as log_event_router
 
 app = FastAPI()
@@ -10,5 +11,5 @@ def read_root():
     return {"message": "Hello, World!"}
 
 
-# Include the log-event router
+# Log-event router
 app.include_router(log_event_router)
