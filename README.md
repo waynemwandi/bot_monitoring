@@ -28,6 +28,11 @@ source venv/Scripts/activate
 pip freeze > requirements.txt
 ```
 
+- Install requirements
+```python
+pip install -r requirements.txt
+```
+
 - Run FastAPI App
 
 ```bash
