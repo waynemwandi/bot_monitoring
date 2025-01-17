@@ -17,6 +17,7 @@ with sqlite3.connect(db_file) as connection:
             heartbeat BOOLEAN NOT NULL,
             department TEXT NOT NULL,
             ip_address TEXT NOT NULL,
+            bot_name TEXT NOT NULL,
             bot_type TEXT NOT NULL,
             status TEXT NOT NULL,
             error_message TEXT

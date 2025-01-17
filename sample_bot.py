@@ -1,10 +1,10 @@
 # sample_bot.py
-import requests
 import datetime
+import os
 import random
 import socket
-import os
 
+import requests
 
 # URL of the FastAPI endpoint
 API_URL = "http://127.0.0.1:8000/log-event/"
@@ -18,17 +18,26 @@ def generate_payload():
     # Get the local IP address
     ip_address = socket.gethostbyname(socket.gethostname())
 
+    bot_names = [
+        "Bankassurance",
+        "MPESA Dump",
+        "Concessions",
+        "Reconciliation",
+        "Deposits",
+    ]  # List of dummy bot names
+
     return {
         "user": user,  # Use the actual logged-in user
         "start_time": datetime.datetime.now().isoformat(),
         "end_time": (
             datetime.datetime.now() + datetime.timedelta(seconds=8)
         ).isoformat(),  # End time after 8 seconds
-        "volumes": random.randint(1, 100),  # Random number of tasks
+        "volumes": random.randint(1, 100),
         "heartbeat": random.choice([True, False]),
         "department": random.choice(["IT", "Finance", "HR", "Ops"]),
-        "ip_address": ip_address,  # Use the actual system's IP address
-        "bot_type": random.choice(["Desktop", "Cloud"]),
+        "ip_address": ip_address,
+        "bot_name": random.choice(bot_names),
+        "bot_type": random.choice(["Attended", "Unattended"]),
         "status": random.choice(["Success", "Failure"]),
         "error_message": (
             None if random.choice([True, False]) else "Sample error message"

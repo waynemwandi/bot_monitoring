@@ -1,7 +1,8 @@
 # db.py
 import os
-import pymysql
 import sqlite3
+
+import pymysql
 from dotenv import load_dotenv
 
 # Load environment variables

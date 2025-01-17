@@ -1,5 +1,8 @@
+from typing import Optional
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
+
 from db import get_mysql_connection, get_sqlite_connection
 
 router = APIRouter()
@@ -13,13 +16,15 @@ class BotLog(BaseModel):
     heartbeat: bool
     department: str
     ip_address: str
+    bot_name: str
     bot_type: str
     status: str
-    error_message: str = None
+    error_message: Optional[str] = None  # Allow None values
 
 
 @router.post("/log-event")
-def log_event(bot_log: BotLog, db_type: str = "sqlite"):
+# def log_event(bot_log: BotLog, db_type: str = "sqlite"):  # Switch str to mysql/sqlite
+def log_event(bot_log: BotLog, db_type: str = "mysql"):  # Switch str to mysql/sqlite
     """
     Handles logging events to either MySQL or SQLite based on the db_type parameter.
 
@@ -39,9 +44,9 @@ def log_event(bot_log: BotLog, db_type: str = "sqlite"):
         cursor = connection.cursor()
         sql = f"""
         INSERT INTO bot_logs 
-        (user, start_time, end_time, volumes, heartbeat, department, ip_address, bot_type, status, error_message)
+        (user, start_time, end_time, volumes, heartbeat, department, ip_address, bot_name, bot_type, status, error_message)
         VALUES ({placeholder}, {placeholder}, {placeholder}, {placeholder}, {placeholder}, 
-                {placeholder}, {placeholder}, {placeholder}, {placeholder}, {placeholder})
+                {placeholder}, {placeholder}, {placeholder}, {placeholder}, {placeholder}, {placeholder})
         """
         cursor.execute(
             sql,
@@ -53,6 +58,7 @@ def log_event(bot_log: BotLog, db_type: str = "sqlite"):
                 bot_log.heartbeat,
                 bot_log.department,
                 bot_log.ip_address,
+                bot_log.bot_name,
                 bot_log.bot_type,
                 bot_log.status,
                 bot_log.error_message,
