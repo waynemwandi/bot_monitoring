@@ -39,3 +39,11 @@ pip install -r requirements.txt
 ```bash
 uvicorn main:app --reload
 ```
+
+### Docker Commands
+
+```bash
+docker-compose up --build -d
+
+docker-compose down
+```

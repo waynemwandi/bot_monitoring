@@ -4,10 +4,19 @@ import os
 import random
 import socket
 
-import requests
+from report_grafana import GrafanaReporter  # Import the reporting utility
 
-# URL of the FastAPI endpoint
-API_URL = "http://127.0.0.1:8000/log-event/"
+# Monitoring API details
+# Local
+# API_URL = "http://127.0.0.1:8000/log-event"
+# Docker
+# API_URL = "http://localhost:8001/log-event"
+# Docker + NGINX
+API_URL = "http://localhost/log-event"
+
+
+# Initialize the reporter
+reporter = GrafanaReporter(api_url=API_URL)
 
 
 # Generate a sample payload
@@ -45,17 +54,26 @@ def generate_payload():
     }
 
 
-# Simulate the bot sending data
+# Simulate the bot sending data using the GrafanaReporter
 def simulate_bot_run():
     payload = generate_payload()
     try:
-        response = requests.post(API_URL, json=payload)
-        if response.status_code == 200:
-            print(f"Successfully logged event: {response.json()}")
-        else:
-            print(f"Failed to log event: {response.status_code}, {response.text}")
+        response = reporter.send_log(
+            user=payload["user"],
+            start_time=payload["start_time"],
+            end_time=payload["end_time"],
+            volumes=payload["volumes"],
+            heartbeat=payload["heartbeat"],
+            department=payload["department"],
+            ip_address=payload["ip_address"],
+            bot_name=payload["bot_name"],
+            bot_type=payload["bot_type"],
+            status=payload["status"],
+            error_message=payload["error_message"],
+        )
+        print(f"Successfully logged event: {response}")
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"An error occurred while sending the log: {e}")
 
 
 if __name__ == "__main__":

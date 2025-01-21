@@ -1,0 +1,42 @@
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx_proxy
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro # Mount the custom NGINX config
+    restart: always
+
+  api:
+    build: .
+    container_name: bot_monitoring_api
+    ports:
+      - "8001:8000"
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: Root2009
+      DB_NAME: bot_monitoring
+    volumes:
+      - .:/app
+    restart: always
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Root2009
+      MYSQL_DATABASE: bot_monitoring
+    ports:
+      - "3308:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
