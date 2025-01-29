@@ -1,3 +1,4 @@
+# log_event.py
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException
@@ -22,6 +23,7 @@ class BotLog(BaseModel):
     error_message: Optional[str] = None  # Allow None values
 
 
+# /log-event route
 @router.post("/log-event")
 # def log_event(bot_log: BotLog, db_type: str = "sqlite"):  # Switch str to mysql/sqlite
 def log_event(bot_log: BotLog, db_type: str = "mysql"):  # Switch str to mysql/sqlite

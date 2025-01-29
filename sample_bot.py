@@ -12,7 +12,9 @@ from report_grafana import GrafanaReporter  # Import the reporting utility
 # Docker
 # API_URL = "http://localhost:8001/log-event"
 # Docker + NGINX
-API_URL = "http://localhost/log-event"
+# API_URL = "http://localhost/log-event"
+# Docker + NGINX + Grafana
+API_URL = "http://localhost/v1/api/log-event"
 
 
 # Initialize the reporter

@@ -6,9 +6,9 @@ This document guides developers on integrating the Bot Monitoring Script into th
 
 1. Install Required Dependencies
 
-```python
-pip install requests
-```
+   ```python
+   pip install requests
+   ```
 
 2. Import and Use in Bot Scripts
 
@@ -42,8 +42,8 @@ reporter.send_log(
 
 2. Initialize it with:
 
-    - api_url: URL of the monitoring API.
-    - bot_name: Name of the bot.
+   - api_url: URL of the monitoring API.
+   - bot_name: Name of the bot.
 
 3. Call the send_log method with the appropriate parameters.
 
@@ -61,7 +61,6 @@ reporter.send_log(
   "bot_name": "MPESA Dump Bot",
   "bot_type": "Unattended",
   "status": "Success",
-  "error_message": null,
+  "error_message": null
 }
-
 ```
