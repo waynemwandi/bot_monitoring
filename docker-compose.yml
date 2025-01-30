@@ -3,7 +3,7 @@ services:
     image: nginx:latest
     container_name: nginx_proxy
     ports:
-      - "81:80"
+      - "80:80"
     depends_on:
       - api
       - grafana
@@ -15,7 +15,7 @@ services:
     build: .
     container_name: bot_monitoring_api
     ports:
-      - "8001:8000"
+      - "8000:8000"
     depends_on:
       - db
     environment:
@@ -35,7 +35,7 @@ services:
       MYSQL_ROOT_PASSWORD: Root2009
       MYSQL_DATABASE: bot_monitoring
     ports:
-      - "3308:3306"
+      - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
 
@@ -43,7 +43,7 @@ services:
     image: grafana/grafana:latest
     container_name: grafana
     ports:
-      - "3001:3000"
+      - "3000:3000"
     depends_on:
       - db
     environment:
