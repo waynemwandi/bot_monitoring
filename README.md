@@ -49,6 +49,8 @@ docker-compose down
 
 docker-compose down && docker-compose up --build -d
 
+docker-compose -f docker-compose.dev.yml up --build -d
+
 ```
 
 ## Run Sample bot
@@ -75,3 +77,27 @@ CREATE TABLE bot_logs (
     error_message TEXT              -- Optional error message
 );
 ```
+
+## SSL / DNS Procedure
+
+1. Update Domain Records - A record pointing to EC2 IP Address
+
+2. Update the /etc/nginx/conf.d/default.conf file with your new domain
+
+3. Update the ALLOWED_HOSTS in Your Django .env File:
+
+4. Stop Nginx to Free Up Port 80
+
+   `docker-compose stop nginx`
+
+5. Run Certbot to Generate/Renew SSL Certificates
+
+   `sudo certbot certonly --standalone -d kejapro.com -d www.kejapro.com`
+
+6. Renew SSL Certificates
+
+   `sudo certbot renew`
+
+7. Restart the Nginx Container
+
+   `docker-compose up -d nginx`

@@ -1,5 +1,6 @@
 # sample_bot.py
 import datetime
+import json
 import os
 import random
 import socket
@@ -14,7 +15,9 @@ from report_grafana import GrafanaReporter  # Import the reporting utility
 # Docker + NGINX
 # API_URL = "http://localhost/log-event"
 # Docker + NGINX + Grafana
-API_URL = "http://localhost/v1/api/log-event"
+# API_URL = "http://localhost/v1/api/log-event"
+# Docker + NGINX + Grafana ++ AWS EC2
+API_URL = "http://13.50.156.247/v1/api/log-event"
 
 
 # Initialize the reporter
@@ -73,7 +76,9 @@ def simulate_bot_run():
             status=payload["status"],
             error_message=payload["error_message"],
         )
-        print(f"Successfully logged event: {response}")
+        print(f"Successfully logged event: ")
+        print(json.dumps(response, indent=4))
+
     except Exception as e:
         print(f"An error occurred while sending the log: {e}")
 
